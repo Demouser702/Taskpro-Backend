@@ -17,9 +17,11 @@
 //   });
 const app = require("./app");
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const { DB_URI } = process.env;
 console.log(DB_URI);
+const PORT = 3000;
 
 mongoose.set("strictQuery", true);
 
@@ -27,8 +29,9 @@ async function connectToDatabase() {
   try {
     await mongoose.connect(DB_URI);
     console.log("Connected to MongoDB!");
+
     app.listen(3000, () => {
-      console.log("Server is running on port 3000");
+      console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
