@@ -15,28 +15,57 @@
 //     console.log(error.message);
 //     process.exit(1);
 //   });
+// require("dotenv").config(); // Load environment variables from .env file
+
+// const app = require("./app");
+// const mongoose = require("mongoose");
+
+// const { DB_URI } = process.env;
+// console.log(DB_URI);
+// if (!DB_URI) {
+//   console.error("Error: DB_URI is not defined in the environment variables");
+//   process.exit(1);
+// }
+
+// console.log("DB_URI:", DB_URI);
+
+// mongoose.set("strictQuery", true);
+
+// async function connectToDatabase() {
+//   try {
+//     await mongoose.connect(DB_URI);
+//     console.log("Connected to MongoDB!");
+//     app.listen(3000, () => {
+//       console.log("Server is running on port 3000");
+//     });
+//   } catch (error) {
+//     console.error("Error connecting to MongoDB:", error);
+//     process.exit(1);
+//   }
+// }
+
+// connectToDatabase();
+const { default: mongoose } = require("mongoose");
 const app = require("./app");
-const mongoose = require("mongoose");
+
 require("dotenv").config();
-
-const { DB_URI } = process.env;
-console.log(DB_URI);
-const PORT = 3000;
-
-mongoose.set("strictQuery", true);
-
-async function connectToDatabase() {
+console.log(process.env.DB_URI);
+if (!process.env.DB_URI) {
+  console.error("Error: DB_URI is not defined in the environment variables");
+  process.exit(1);
+}
+const connectToDb = async () => {
   try {
-    await mongoose.connect(DB_URI);
-    console.log("Connected to MongoDB!");
+    await mongoose.connect(process.env.DB_URI);
+    console.log("Connected to MongoDB");
 
     app.listen(3000, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log("Server is running on port 3000");
     });
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
     process.exit(1);
   }
-}
+};
 
-connectToDatabase();
+connectToDb();
