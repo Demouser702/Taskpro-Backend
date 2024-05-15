@@ -45,17 +45,16 @@
 // }
 
 // connectToDatabase();
+
 const { default: mongoose } = require("mongoose");
 const app = require("./app");
-
 require("dotenv").config();
-console.log(process.env.DB_URI);
-if (!process.env.DB_URI) {
-  console.error("Error: DB_URI is not defined in the environment variables");
-  process.exit(1);
-}
 const connectToDb = async () => {
   try {
+    console.log(
+      "Attempting to connect to MongoDB with URI:",
+      process.env.DB_URI
+    );
     await mongoose.connect(process.env.DB_URI);
     console.log("Connected to MongoDB");
 
@@ -67,5 +66,4 @@ const connectToDb = async () => {
     process.exit(1);
   }
 };
-
 connectToDb();
